@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import Server.getInfo;
+
 
 public class section_login extends JFrame {
 	BufferedImage logoImg = null;
@@ -139,6 +141,7 @@ public class section_login extends JFrame {
 		logBTN.addActionListener(new ActionListener() {
 			String setId = idField.getText();
 			String SetPass = passField.getText();
+			boolean loginCheck;
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -148,9 +151,23 @@ public class section_login extends JFrame {
 					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 입력하지 않았습니다.");
 				}
 				else {
-					if(setId.length()>=2 && setId.length()<=8) {
+					if(idField.getText().length()>=2 && passField.getText().length()<=8) {
 						//2보다 크거나같은 , 8보다 작거나같은
 						//로그인 커넥션 클래스로 이동...Start
+						getInfo gIFo = new getInfo();
+						//System.out.println(idField.getText());
+						//System.out.println(passField.getText());
+						loginCheck =gIFo.getLogin(idField.getText(),passField.getText());
+						
+						if(loginCheck == true) {
+							JOptionPane.showMessageDialog(null, "로그인성공");
+						}
+						else if(loginCheck = false) {
+							JOptionPane.showMessageDialog(null, "로그인실패.. 아이디 비번확인");
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "알 수 없는 오류 , 관리자에게 연락");
+						}
 						//로그인 커넥션 클래스로 이동...End
 					}
 					else {
@@ -172,6 +189,7 @@ public class section_login extends JFrame {
 				//회원가입 페이지로 이동 ... Start
 				section_Register sr = new section_Register();
 				sr.getContentPane().setBackground(Color.white);
+				dispose();
 				//회원가입 페이지로 이동 ... End
 			}
 			
