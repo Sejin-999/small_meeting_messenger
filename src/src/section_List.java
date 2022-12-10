@@ -37,7 +37,8 @@ public class section_List extends JFrame{
 		setSize(1000,1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
-		
+		setResizable(false);
+		setLocationRelativeTo(null);
 		try {
 			logoImg = ImageIO.read(new File("C:\\Users\\SeJin\\eclipse-workspace\\small_meeting_messenger\\src\\img\\logo.png")); 
 			

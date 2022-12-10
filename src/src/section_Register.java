@@ -32,7 +32,8 @@ public class section_Register extends JFrame{
 		setSize(800,800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
-		
+		setResizable(false);
+		setLocationRelativeTo(null);
 		// 배경화면 설정
 				try {
 					logoImg = ImageIO.read(new File("C:\\Users\\SeJin\\eclipse-workspace\\small_meeting_messenger\\src\\img\\logo.png")); 

@@ -32,8 +32,8 @@ public class section_login extends JFrame {
 		setSize(800,600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
-		
-		
+		setResizable(false);
+		setLocationRelativeTo(null);
 		// 배경화면 설정
 		try {
 			logoImg = ImageIO.read(new File("C:\\Users\\SeJin\\eclipse-workspace\\small_meeting_messenger\\src\\img\\logo.png")); 
@@ -161,6 +161,8 @@ public class section_login extends JFrame {
 						
 						if(loginCheck == true) {
 							JOptionPane.showMessageDialog(null, "로그인성공");
+							new client_chat("세진"); 
+							dispose();
 						}
 						else if(loginCheck = false) {
 							JOptionPane.showMessageDialog(null, "로그인실패.. 아이디 비번확인");
