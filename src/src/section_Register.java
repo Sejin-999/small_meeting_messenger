@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Server.getInfo;
+
 
 public class section_Register extends JFrame{
 	BufferedImage logoImg = null;
@@ -197,7 +199,7 @@ public class section_Register extends JFrame{
 					public void focusLost(FocusEvent e) {
 						// TODO Auto-generated method stub
 						if (StudentIDField.getText().length() == 0 ) {
-							StudentIDField.setText("닉네임을 입력하세요");
+							StudentIDField.setText("학번을 입력하세요");
 							StudentIDField.setForeground(new Color(255,26,26));
 						}
 					}
@@ -275,6 +277,14 @@ public class section_Register extends JFrame{
 						if(boola ==4) {
 							JOptionPane.showMessageDialog(null, "회원가입에 성공하였습니다!! ");
 							//회원가입 메소드로 이동...
+							String setId = idField.getText();
+							String setPass = passField.getText();
+							String setNick = nickNameField.getText();
+							String setStID = StudentIDField.getText();
+							int chSetStId = Integer.parseInt(setStID);
+							
+							getInfo gIFo = new getInfo();
+							gIFo.getRegister(chSetStId, setId,setPass, setNick);
 							//회원가입 메소드로 이동... 종료
 							section_login sl = new section_login();
 							sl.getContentPane().setBackground(Color.white);

@@ -39,6 +39,25 @@ public class getInfo {
 	
 	}
 	
+	
+	public boolean getRegister(int getSTID , String getID , String getPass , String getNick) {
+		int setSTID ;
+		String setID,setPass, setNick;
+		
+		setSTID = getSTID ;
+		setID=getID; setPass = getPass; setNick=getNick;
+		
+		DBcon con = new DBcon();
+		con.isRegister(getSTID, getID, getPass, getNick);
+		
+		
+		
+		
+		
+		return false;
+	}
+	
+	
 }
 
 
