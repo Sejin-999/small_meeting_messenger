@@ -275,7 +275,7 @@ public class section_Register extends JFrame{
 						System.out.println(boola);
 						
 						if(boola ==4) {
-							JOptionPane.showMessageDialog(null, "회원가입에 성공하였습니다!! ");
+							//JOptionPane.showMessageDialog(null, "회원가입에 성공하였습니다!! ");
 							//회원가입 메소드로 이동...
 							String setId = idField.getText();
 							String setPass = passField.getText();

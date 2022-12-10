@@ -1,7 +1,6 @@
 package Server;
 
 import java.sql.*;
-import java.sql.DriverManager;
 
 public class DBcon {
 	private Connection con;
@@ -45,20 +44,18 @@ public class DBcon {
 		return false;
 	}
 	
-	public boolean isRegister(int getSTID , String getID , String getPass , String getNick) {
+	public boolean isRegisterCheck(int getSTID) throws SQLException {
 		try {
-			
-			//회원가입전 학번확인을 통해 고유성 유지
 			int setSTId = getSTID ;
+			//회원가입전 학번확인을 통해 고유성 유지
+			
 			System.out.println(setSTId);
 			String getSTIDSQL = " select exists (select student_id from user_table where student_id = ?)";
 			pstmt = con.prepareStatement(getSTIDSQL);
 			pstmt.setInt(1,setSTId);
 			rs =pstmt.executeQuery();
-			
-			
-			
-			if(rs.next()) {
+
+			while(rs.next()) {
 				System.out.println(rs.getInt(1));
 				if(rs.getInt(1) == 1) {
 					//학생아이디가 이미 있는 경우
@@ -66,18 +63,33 @@ public class DBcon {
 				}
 				else if(rs.getInt(1) == 0) {
 					//학생아이디가 없는경우
-					System.out.println("회원가입 시작..");
+					return true;
+				
 				}
 			}
-			
-			else {
-				System.out.println("알 수 없는경우");
-				return false;
-			}
-			
+
 		}catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("회원가입 오류");
+		
+		}
+		return false;
+	}
+	
+	
+	public boolean isRegister(int getSTId , String getId, String getPass , String getNick) {
+		int setSTId = getSTId;
+		String setId = getId , setPass= getPass , setNick = getNick;
+		try {
+				String register = "INSERT INTO user_table values(?,?,?,?)";
+				pstmt = con.prepareStatement(register);
+				pstmt.setInt(1,setSTId);
+				pstmt.setString(2, setId);
+				pstmt.setString(3,  setPass);
+				pstmt.setString(4, setNick);
+				pstmt.execute();
+				return true;
+		}catch (Exception e) {
+			// TODO: handle exception
 		}
 		return false;
 	}
