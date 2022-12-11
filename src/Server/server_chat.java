@@ -5,93 +5,76 @@ import java.net.*;
 import java.util.Scanner;
 
 public class server_chat {
-
-
-    public static final int PORT = 6077;
- 
-    public static void main(String[] args) {
- 
-        ServerSocket serverSocket = null;
- 
-        InputStream is = null;
-        InputStreamReader isr = null;
-        BufferedReader br = null;
- 
-        OutputStream os = null;
-        OutputStreamWriter osw = null;
-        PrintWriter pw = null;
-        Scanner sc = new Scanner(System.in);
- 
-        try {
-            // 1. Server Socket 생성
-            serverSocket = new ServerSocket();
- 
-            // 2. Binding : Socket에 SocketAddress(IpAddress + Port) 바인딩 함
- 
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            String localhost = inetAddress.getHostAddress();
- 
-            serverSocket.bind(new InetSocketAddress(localhost, PORT));
- 
-            System.out.println("[server] binding " + localhost);
- 
-            // 3. accept(클라이언트로 부터 연결요청을 기다림)
- 
-            Socket socket = serverSocket.accept();
-            InetSocketAddress socketAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
- 
-            System.out.println("[server] connected by client");
-            System.out.println("[server] Connect with " + socketAddress.getHostString() + " " + socket.getPort());
- 
-            while (true) {
- 
-                // inputStream 가져와서 (주 스트림) StreamReader와 BufferedReader로 감싸준다 (보조 스트림)
-                is = socket.getInputStream();
-                isr = new InputStreamReader(is, "UTF-8");
-                br = new BufferedReader(isr);
- 
-                // outputStream 가져와서 (주 스트림) StreamWriter와 PrintWriter로 감싸준다 (보조 스트림)
-                os = socket.getOutputStream();
-                osw = new OutputStreamWriter(os, "UTF-8");
-                pw = new PrintWriter(osw, true);
- 
-                String buffer = null;
-                buffer = br.readLine(); // Blocking
-                if (buffer == null) {
- 
-                    // 정상종료 : remote socket close()
-                    // 메소드를 통해서 정상적으로 소켓을 닫은 경우
-                    System.out.println("[server] closed by client");
-                    break;
- 
-                }
- 
-                System.out.println("[server] recived : " + buffer);
-                pw.println(buffer);
- 
-            }
- 
-            // 3.accept(클라이언트로 부터 연결요청을 기다림)
-            // .. blocking 되면서 기다리는중, connect가 들어오면 block이 풀림
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
- 
-            try {
- 
-                if (serverSocket != null && !serverSocket.isClosed())
-                    serverSocket.close();
- 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
- 
-            sc.close();
- 
-        }
- 
-    }
+	
+	public static void main(String[] args) throws IOException {
+		new server_chat();
+	}
+	
+	
+	ServerSocket serverSock; //대기중인 서버소캣
+	final int port = 9999;  //포트 9999
+	Socket sock; // 보내기용 소캣
+	
+	public server_chat() throws IOException {
+		serverSock = new ServerSocket(port);
+		
+		while(true) {
+			try {
+				System.out.println("소캣 어셉트 시작..");
+				sock = serverSock.accept();
+				makeThread newThread = new makeThread(sock);  //아래 만들어둔 인풋 아웃풋을 가지고옴
+				Thread thr = new Thread(newThread);  //그리고나서 쓰레드로 안에 넣어 선언함
+				thr.start();
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+	}
 
  }
+
+
+class makeThread implements Runnable{ //추가될 frame 고려해서
+	Socket sock;
+	
+	InputStream is;  // 바꿀것
+	ObjectInputStream ois; //바꿀것
+	OutputStream os; //바꿀것
+	ObjectOutputStream oos; //바꿀것
+	String rivData;  //데이저장
+	
+	makeThread(Socket getSock){
+		System.out.println("쓰레드 생성시작");
+		sock = getSock;
+		try {
+			System.out.println("요청 >"+sock.getInetAddress());
+			
+			is = sock.getInputStream();
+			ois = new ObjectInputStream(is);
+			
+			os = sock.getOutputStream();
+			oos = new ObjectOutputStream(os);
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("에러에러");
+		}
+		
+	}
+	
+	public void run() {
+		System.out.println("런 메소드 시작");
+		try {
+			rivData = (String)ois.readObject(); //사용자에게 받는 메시지
+			System.out.println(rivData);
+			oos.writeObject(rivData); // 사용자에게 받은걸 다시 보내는 메시지
+			oos.flush(); //나중에 지울것 출력스트림 비우는거 .. 
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+}
 
 
