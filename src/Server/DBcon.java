@@ -94,6 +94,34 @@ public class DBcon {
 		return false;
 	}
 	
+	public String isNick(String getId) {
+		// 닉네임을 DB에서 뽑아줄 메소드
+		String setNick=null;
+		String setId = getId;
+		String SQL = "select User_nickname from user_table where user_id = ?"; // db에서 아아디에 해당하는 유저닉네임을 가지고온다.
+		
+		try {
+			PreparedStatement pstmt;
+			pstmt = con.prepareStatement(SQL);
+			pstmt.setString(1,setId);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				System.out.println("닉네임 db가져오기 : " + rs.getString(1));
+				setNick = rs.getString(1);
+				return setNick;
+				
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("값을 못받음 확인 필요.?");
+		}
+		
+		return setNick;
+	}
 	
 	
 }
+
+

@@ -83,6 +83,45 @@ public class getInfo {
 		return false;
 	}
 	
+	/* 완료하면 나중에 이거 IP랑 Nick이랑 합쳐서 하나의 함수에서 한번에 가져올 수 있게 리펙토링 할것*/
+	public String giveIp() {
+		String ip;  //못받아온경우
+		String error = "error";  //커넥션간의 문제가 있는경우
+		
+		DBcon_Server dbServ = new DBcon_Server();
+		
+		ip = dbServ.isIp();
+		
+		if(ip != null) {
+			return ip;
+		}
+		else {
+			System.out.println("Ip 값 가져오는데 문제가 발생하였습니다.");
+		}
+		
+		return error;
+		
+	}
+	
+	
+	public String giveNick(String getId) {
+		String nick ;
+		String error = "Nick error";
+		System.out.println("닉네임 db가져오기 : " +getId );
+		DBcon con = new DBcon();
+		nick = con.isNick(getId);
+		
+		if(nick != null) {
+			return nick;
+		}
+		else {
+			System.out.println("nickName 값 가져오는데 문제가 발생하였습니다.");
+		}
+		
+		return error;
+	}
+	
+	
 	
 }
 

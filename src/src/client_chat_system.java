@@ -11,7 +11,7 @@ import java.net.*;
 
 public class client_chat_system {
 	Socket sock_client =null;
-	String setIP;
+	String setIP,setNick;
 	final int port = 9999; //
 	
 	/*바꿀내용 start*/
@@ -24,12 +24,13 @@ public class client_chat_system {
 	String sendData; // 보낼 데이터
 	String rivData;  // 받을 데이터
 	
-	public client_chat_system(String ip) throws UnknownHostException, IOException {
-		setIP = ip;
+	public client_chat_system(String getip , String getNick) throws UnknownHostException, IOException {
+		setIP = getip;
+		setNick = getNick;
 		
 		System.out.println("클라이언트 시작");
 		
-		sock_client = new Socket(ip,port);
+		sock_client = new Socket(setIP,port);
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		
 		os =sock_client.getOutputStream();
@@ -46,7 +47,7 @@ public class client_chat_system {
 			
 			try {
 				rivData = (String)ois.readObject();
-				System.out.println("abc :"+"받은메시지 :: " + rivData);
+				System.out.println(setNick +":: " + rivData);
 				System.out.println("입력 :: ");
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
@@ -67,7 +68,7 @@ public class client_chat_system {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		// TODO Auto-generated method stub
-		new client_chat_system("127.0.0.1"); //나중에 값받기
+		//new client_chat_system("127.0.0.1"); //나중에 값받기
 	}
 
 }

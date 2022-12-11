@@ -9,6 +9,8 @@ import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -161,7 +163,27 @@ public class section_login extends JFrame {
 						
 						if(loginCheck == true) {
 							JOptionPane.showMessageDialog(null, "로그인성공");
-							new client_chat("세진"); 
+							//chat_Connect();
+							
+							// 나중에 리스트에서 부르는방식으로 바꿀것...Start
+							
+							String setIP , setNick;  //메신저를 부를때 줄 ip와 닉네임 셋업
+							
+							setIP = gIFo.giveIp();  //여기까지 도착하면 문제없음...
+							setNick = gIFo.giveNick(idField.getText()); //넘어갈때 id값으로 닉네임을 조회한다.
+							try {
+								
+								System.out.println("setIP : " + setIP  + "  setNick : "+setNick);
+								chat_Connect ch_con = new chat_Connect(setIP, setNick);
+							} catch (UnknownHostException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							// 나중에 리스트에서 부르는방식으로 바꿀것...End
+							
 							dispose();
 						}
 						else if(loginCheck = false) {
