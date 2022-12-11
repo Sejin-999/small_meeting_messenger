@@ -1,6 +1,7 @@
 package src;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -8,14 +9,19 @@ import java.io.File;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import src.section_login.LoginPanel;
 
@@ -24,15 +30,27 @@ public class section_List extends JFrame{
 	JLabel title;
 	
 	private JPanel listPanel;
-	private JTable listTable;
-	private JTextField meet_name;
-	private JTextField meet_num;
-	private JTextField meet_content;
-	private JTextField meet_date;
-	private Vector data , header;
+	private JPanel infoPanel;  //닉네임 , 소모임 추가버튼
+	private JTextField nick_name;
+	private JButton add_club;
+	private JScrollPane content_pane;
+	
 	Font font2 = new Font("맑은 고딕", Font.PLAIN,35);
 	
+	JList list;
+	String header[] = {"순번","이름","설명"};
+	String contents[][] = {
+			{"1","공부동아리","공부를 하는 모임"},
+			{"2","공부동아리","공부를 하는 모임"},
+			{"3","공부동아리","공부를 하는 모임"},
+			{"4","공부동아리","공부를 하는 모임"}
+	};
+	
+	String nickName="undefined";
+	
 	public section_List() {
+		int rowlen = contents.length; 
+		System.out.println(rowlen);
 		setTitle("한국공학대 - 소모임 - 리스트");
 		setSize(1000,1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,21 +65,40 @@ public class section_List extends JFrame{
 			System.out.println("이미지 실패.. 파일깨짐");
 			System.exit(0);
 		}
-		
+		/*로고 패널 Start*/
 		LogoPanel lp = new LogoPanel();
 		lp.setBounds(0,20,600,400);
 		
 		add(lp);
-		
+		//타이틀
 		title = new JLabel("소모임-리스트");
 		title.setFont(font2);
 		title.setBounds(400,0,600,200);
 		add(title);
 		
+		infoPanel = new JPanel();
+		
+		nick_name = new JTextField(nickName , 10);
+		nick_name.setEditable(false);
+		add_club = new JButton("소모임 추가하기");
+		
+		infoPanel.add(nick_name);
+		infoPanel.add(add_club);
+		
+		infoPanel.setBounds(500,0,600,200);
+		infoPanel.setBackground(Color.white);
+		add(infoPanel);
+		
+		/*로고 패널 End*/
+		
+		/*리스트 패널 Start*/
 		listPanel = new JPanel();
 		listPanel.setBounds(0,200,1000,800);
+		listPanel.setBackground(Color.white);
 		add(listPanel);
-		
+		JTable table = new JTable(contents,header);
+		JScrollPane scroll = new JScrollPane(table);
+		listPanel.add(scroll);
 		
 		setVisible(true);
 		
@@ -80,3 +117,44 @@ public class section_List extends JFrame{
 	}
 	
 }
+
+
+
+
+/*리스트 만들다 안된것들... 나중에 확인해보고 지우기*/
+
+/*
+vec = new Vector();
+list = new JList();
+
+for(int i=0; i<str.length; i++) {
+	vec.addElement(str[i]);
+}
+list.setListData(vec);
+list.setSelectedIndex(0);
+
+content_pane = new JScrollPane(list);
+content_pane.setPreferredSize(new Dimension(1000,280));
+//listPanel.add(content_pane);
+ * *
+ */
+/*리스트 패널 End*/
+
+/*테이블 제대로할것*/
+/*
+Dimension conTableSize = new Dimension(1000,300);
+JFrame contentFrame = new JFrame();
+contentFrame.setBounds(0,200,1000,800);
+contentFrame.setPreferredSize(conTableSize);
+
+String header[] = {"순번","이름","설명","날짜"};
+String contents[][] = {
+		{"1","공부동아리","공부를 하는 모임","12-12"},
+		{"2","공부동아리","공부를 하는 모임","12-12"},
+		{"3","공부동아리","공부를 하는 모임","12-12"}
+};
+JTable table = new JTable(contents,header);
+JScrollPane scroll = new JScrollPane(table);
+listPanel.add(scroll);
+contentFrame.pack();
+*/

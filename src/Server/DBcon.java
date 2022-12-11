@@ -121,6 +121,41 @@ public class DBcon {
 		return setNick;
 	}
 	
+	/* *******************************소모임에 대한 커넥터 파트**************************************************** */
+	public boolean isMakeClub(String getClubName ,String getContent , Date getDate , int getAssigned_port , int getClubHead) {
+		String setClubName , setContent ;
+		Date setDate;
+		int setAssigned_port ,setClubHead;
+		
+		setClubName = getClubName;  setContent = getContent; setDate = getDate; setAssigned_port = getAssigned_port ;
+		setClubHead = getClubHead;
+		
+		String SQL = "insert into club_table(club_name , content , createDate , assigned_port,club_head)"
+				+ "values(?,?,?,?,?)";
+		
+		try {
+			pstmt = con.prepareStatement(SQL);
+			pstmt.setString(1,setClubName);
+			pstmt.setString(2,setContent);
+			pstmt.setDate(3,setDate);
+			pstmt.setInt(4,setAssigned_port);
+			pstmt.setInt(5,setClubHead);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {  //성공하면 값이 불러질거임
+				System.out.println("클럽 만들기 성공"+setClubName);
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	
 }
 

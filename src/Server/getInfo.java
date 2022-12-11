@@ -8,15 +8,6 @@ public class getInfo {
 		
 	}
 	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		getInfo in = new getInfo();
-		System.out.println("서버 시작");
-	}
-
-	
 	public boolean getLogin(String getId , String getPass) {
 		String setId = getId;
 		String setPass = getPass;
