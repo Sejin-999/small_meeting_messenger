@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class DBcon {
 	private Connection con;
@@ -122,37 +123,32 @@ public class DBcon {
 	}
 	
 	/* *******************************소모임에 대한 커넥터 파트**************************************************** */
-	public boolean isMakeClub(String getClubName ,String getContent , Date getDate , int getAssigned_port , int getClubHead) {
+	public boolean isMakeClub(String getClubName ,String getContent  , int getAssigned_port , int getClubHead) {
 		String setClubName , setContent ;
-		Date setDate;
 		int setAssigned_port ,setClubHead;
 		
-		setClubName = getClubName;  setContent = getContent; setDate = getDate; setAssigned_port = getAssigned_port ;
+		setClubName = getClubName;  setContent = getContent; setAssigned_port = getAssigned_port ;
 		setClubHead = getClubHead;
 		
-		String SQL = "insert into club_table(club_name , content , createDate , assigned_port,club_head)"
-				+ "values(?,?,?,?,?)";
+		String SQL = "insert into club_table(club_name,content,assigned_port,club_head)"
+				+ "values(?,?,?,?)";
 		
 		try {
 			pstmt = con.prepareStatement(SQL);
 			pstmt.setString(1,setClubName);
 			pstmt.setString(2,setContent);
-			pstmt.setDate(3,setDate);
-			pstmt.setInt(4,setAssigned_port);
-			pstmt.setInt(5,setClubHead);
+			pstmt.setInt(3,setAssigned_port);
+			pstmt.setInt(4,setClubHead);
 			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {  //성공하면 값이 불러질거임
-				System.out.println("클럽 만들기 성공"+setClubName);
-				return true;
-			}
+			pstmt.execute();
+			System.out.println("클럽 만들기 성공"+setClubName);
+			return true;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.out.println("클럽 만들기 실패"+setClubName);
 			e.printStackTrace();
 		}
-		
 		return false;
 	}
 	

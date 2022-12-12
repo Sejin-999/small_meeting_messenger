@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBcon_Server {
@@ -65,6 +66,18 @@ public class DBcon_Server {
 		}
 		
 		return 0;  //0일경우 오류
+		
+	}
+	
+	public boolean isUpdatePort(int getUpdatePort) throws SQLException {
+		int port =getUpdatePort;
+		
+		String SQL ="insert into port_table (port) values (?)";
+		pstmt = con.prepareStatement(SQL);
+		pstmt.setInt(1,port);
+		pstmt.execute();
+			return true;
+			
 		
 	}
 	

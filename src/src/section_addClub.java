@@ -2,13 +2,19 @@ package src;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -18,7 +24,7 @@ public class section_addClub extends JFrame{
 	BufferedImage logoImg = null;
 	JTextField clubNameField , contentField;
 	JLabel content_s,content_s_title,content_s_stid,content_s_port , studentID , port;
-	JButton addClubBTN ;
+	JButton addClubBTN ,escBTN ;
 	int setStudentId; //못받아온 경우 해당값으로
 	int setPort;
 	String showStudentId , showProt;
@@ -38,6 +44,7 @@ public class section_addClub extends JFrame{
 		/*여기서 포트번호 가져옴*/
 		getInfo_club gIfo_c = new getInfo_club();
 		setPort = gIfo_c.getPort();
+		System.out.println(setPort);
 		setPort +=1; // 다음 포트를 사용할 수 있게... 즉 채팅방이 포트가 달라지며 분리가 생김
 		showProt = Integer.toString(setPort);
 		
@@ -58,10 +65,15 @@ public class section_addClub extends JFrame{
 		
 		add(cp);
 		// 클럽추가  로고 설정 메인 가운데 ...  End
-		
+		//header
 		content_s_title = new JLabel("클럽 이름을 입력하세요 (10글자 내외)");
 		content_s_title.setBounds(300,160,300,40); 
 		add(content_s_title);
+		
+		escBTN = new JButton("리스트로 돌아가기");
+		escBTN.setBounds(610,20,150,50);
+		add(escBTN);
+		//header
 		
 		clubNameField = new JTextField(15);
 		clubNameField.setBounds(300,200,200,40); 
@@ -94,9 +106,68 @@ public class section_addClub extends JFrame{
 		add(port);
 		/*포트 end*/
 		
-		
-		
+		//클럽추가버튼
+		addClubBTN = new JButton("소모임 추가");
+		addClubBTN.setBounds(300,550,200,100);
+		add(addClubBTN);
 		setVisible(true);
+		
+		
+		
+		/*핸들 이벤트 시작*/
+		escBTN.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				section_List sL = new section_List();
+				sL.getContentPane().setBackground(Color.white);
+				dispose(); 
+				
+				
+			}
+		});
+		
+		
+		addClubBTN.addActionListener(new ActionListener() {
+			boolean checkAddClub , checkUpdatePort;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				checkAddClub = gIfo_c.makeClub(clubNameField.getText(), contentField.getText(), setPort, setStudentId);
+				//                  클럽이름                설명     ,               포트번호      , 학번 
+				if(checkAddClub == true) {
+					//성공
+					System.out.println("클럽 추가 성공.... 확인");
+					//포트번호 추가... 
+					try {
+						checkUpdatePort= gIfo_c.updatePort(setPort);
+						
+						if(checkUpdatePort == true) {
+							System.out.println("포트 업데이트 성공.... 확인");
+							JOptionPane.showMessageDialog(null, "소모임이 추가 되었습니다.");
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "소모임이 추가 실패.");
+						}
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+				}
+				else {
+					//실패
+					System.out.println("클럽 추가 실패.... 확인");
+					JOptionPane.showMessageDialog(null, "핸들러 오류....");
+				}
+				
+			}
+		});
+		
+		/*핸들 이벤트 종료*/
 	}
 	
 	class addClubPanel extends JPanel{
