@@ -26,8 +26,22 @@ public class getInfo_club {
 			System.out.println("클럽생성 성공... 최종");
 		}
 		
-		
+		  
 		return false; //클럽생성실패
+	}
+	
+	
+	public int getPort () {
+		int resPort;
+		
+		DBcon_Server dbSer = new DBcon_Server();
+		resPort = dbSer.isPort();
+		
+		if(resPort != 0) {
+			return resPort;
+		}
+		
+		return 0; //0일경우 오류
 	}
 	
 	

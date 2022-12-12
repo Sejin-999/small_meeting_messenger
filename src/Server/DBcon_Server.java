@@ -46,7 +46,27 @@ public class DBcon_Server {
 	}
 	
 	
+	//포트번호 주기 ... 클럽 회원가입시
 	
+	public int isPort() {
+		int setPort;
+		String SQL = "select port from port_table where seq = (select max(seq) from port_table )";
+		try {
+			pstmt = con.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				setPort = rs.getInt(1);
+				return setPort;
+				
+			}
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return 0;  //0일경우 오류
+		
+	}
 	
 	
 }
