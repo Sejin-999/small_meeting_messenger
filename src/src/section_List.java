@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -35,9 +37,16 @@ public class section_List extends JFrame{
 	
 	private JPanel listPanel;
 	private JPanel infoPanel;  //닉네임 , 소모임 추가버튼
+	private JPanel info2Panel;
+	
 	private JTextField nick_name;
 	private JButton add_club;
+	
 	private JScrollPane content_pane;
+	
+	private JLabel agras;
+	private JTextField input_clubNum;
+	private JButton enter_BTN;
 	
 	Font font2 = new Font("맑은 고딕", Font.PLAIN,35);
 	
@@ -86,18 +95,29 @@ public class section_List extends JFrame{
 		add(title);
 		
 		infoPanel = new JPanel();
+		info2Panel = new JPanel();
+		
 		
 		nick_name = new JTextField(nickName , 10);
 		nick_name.setEditable(false);
 		add_club = new JButton("소모임 추가하기");
 		
+		
+		input_clubNum = new JTextField(10);
+		enter_BTN = new JButton("채팅방 입장");
+		
 		infoPanel.add(nick_name);
 		infoPanel.add(add_club);
+		info2Panel.add(input_clubNum);
+		info2Panel.add(enter_BTN);
 		
 		infoPanel.setBounds(500,0,600,200);
 		infoPanel.setBackground(Color.white);
 		add(infoPanel);
 		
+		info2Panel.setBounds(590,750,400,100);
+		info2Panel.setBackground(Color.white);
+		add(info2Panel);
 		/*로고 패널 End*/
 		
 		/*리스트 패널 Start*/
@@ -108,6 +128,9 @@ public class section_List extends JFrame{
 		JTable table = new JTable(contents,header);
 		JScrollPane scroll = new JScrollPane(table);
 		listPanel.add(scroll);
+		
+		/*입장 패널 Start*/
+		
 		
 		setVisible(true);
 		
@@ -131,6 +154,34 @@ public class section_List extends JFrame{
 				}
 			}
 		});
+		
+		
+		enter_BTN.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				getInfo gIFo = new getInfo();
+				
+				String setIP , setNick;  //메신저를 부를때 줄 ip와 닉네임 셋업
+				
+				setIP = gIFo.giveIp();  //여기까지 도착하면 문제없음...
+				setNick = gIFo.giveNick(setId); //넘어갈때 id값으로 닉네임을 조회한다.
+				try {
+					
+					System.out.println("setIP : " + setIP  + "  setNick : "+setNick);
+					chat_Connect ch_con = new chat_Connect(setIP, setNick);
+					
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		
 		
 	}
 	
