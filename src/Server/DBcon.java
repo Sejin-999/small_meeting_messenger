@@ -122,6 +122,30 @@ public class DBcon {
 		return setNick;
 	}
 	
+	public int isSTID(String getId) {
+		String setId; setId=getId;
+		int saveSTID;
+		
+		String SQL = "select student_id from user_table where user_id = ?";
+
+		try {
+			pstmt = con.prepareStatement(SQL);
+			pstmt.setString(1,setId);
+			rs =pstmt.executeQuery();
+			
+			if(rs.next()) {
+				System.out.println(rs.getInt(1));
+				saveSTID = rs.getInt(1);
+				return saveSTID;
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return 0; //오류
+	}
+	
+	
 	/* *******************************소모임에 대한 커넥터 파트**************************************************** */
 	public boolean isMakeClub(String getClubName ,String getContent  , int getAssigned_port , int getClubHead) {
 		String setClubName , setContent ;

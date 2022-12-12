@@ -163,10 +163,14 @@ public class section_login extends JFrame {
 						
 						if(loginCheck == true) {
 							JOptionPane.showMessageDialog(null, "로그인성공");
+							
+							section_List SL = new section_List(idField.getText());
+							SL.getContentPane().setBackground(Color.white);
+							
 							//chat_Connect();
 							
 							// 나중에 리스트에서 부르는방식으로 바꿀것...Start
-							
+							/*
 							String setIP , setNick;  //메신저를 부를때 줄 ip와 닉네임 셋업
 							
 							setIP = gIFo.giveIp();  //여기까지 도착하면 문제없음...
@@ -175,6 +179,7 @@ public class section_login extends JFrame {
 								
 								System.out.println("setIP : " + setIP  + "  setNick : "+setNick);
 								chat_Connect ch_con = new chat_Connect(setIP, setNick);
+								
 							} catch (UnknownHostException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -183,7 +188,7 @@ public class section_login extends JFrame {
 								e1.printStackTrace();
 							}
 							// 나중에 리스트에서 부르는방식으로 바꿀것...End
-							
+							*/
 							dispose();
 						}
 						else if(loginCheck = false) {

@@ -112,6 +112,19 @@ public class getInfo {
 		return error;
 	}
 	
+	public int giveSTID(String getId) {
+		int setSTID;
+	
+		DBcon con = new DBcon();
+		setSTID = con.isSTID(getId);
+		
+		if(setSTID != 0) {
+			return setSTID;
+		}
+		
+		return 0;
+	}
+	
 	
 	
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Vector;
@@ -23,6 +25,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import Server.DBcon;
+import Server.getInfo;
 import src.section_login.LoginPanel;
 
 public class section_List extends JFrame{
@@ -47,10 +51,15 @@ public class section_List extends JFrame{
 	};
 	
 	String nickName="undefined";
+	String setId;
 	
-	public section_List() {
-		int rowlen = contents.length; 
-		System.out.println(rowlen);
+	public section_List(String getId) {
+		setId= getId;
+		getInfo ina = new getInfo();
+		nickName=ina.giveNick(setId);
+		
+		//int rowlen = contents.length; 
+		//System.out.println(rowlen);
 		setTitle("한국공학대 - 소모임 - 리스트");
 		setSize(1000,1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,6 +111,27 @@ public class section_List extends JFrame{
 		
 		setVisible(true);
 		
+		
+		add_club.addActionListener(new ActionListener() {
+			//소모임 추가 버튼
+			// 넘겨줄값 학번이랑 아이디 ././ 아이디는 여기서 받아왔음
+			int setSTID;
+		
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				getInfo ginf = new getInfo();
+				System.out.println("학번찾기전 아이디값" + setId);
+				setSTID = ginf.giveSTID(setId);
+				if(setSTID != 0 ) {
+					//성공
+					new section_addClub(setSTID ,setId );
+					dispose();
+				}
+			}
+		});
+		
 	}
 	
 	class LogoPanel extends JPanel{
@@ -112,7 +142,7 @@ public class section_List extends JFrame{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		section_List sl = new  section_List();
+		section_List sl = new  section_List("test");
 		sl.getContentPane().setBackground(Color.white);
 	}
 	

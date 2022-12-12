@@ -29,8 +29,10 @@ public class section_addClub extends JFrame{
 	int setPort;
 	String showStudentId , showProt;
 	//club_head , Createdate 받아서
+	String backupId;
 	
-	public section_addClub(int getStudentId){
+	
+	public section_addClub(int getStudentId ,String getId){
 		setTitle("한국공학대 - 소모임 - 메신저 - 회원가입");
 		setSize(800,800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,6 +42,8 @@ public class section_addClub extends JFrame{
 		
 		setStudentId = getStudentId;
 		showStudentId = Integer.toString(setStudentId);
+		
+		backupId = getId; //돌아가거나 할때 주기위해 .. 세션처럼
 		
 		/*여기서 포트번호 가져옴*/
 		getInfo_club gIfo_c = new getInfo_club();
@@ -120,7 +124,7 @@ public class section_addClub extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				section_List sL = new section_List();
+				section_List sL = new section_List(backupId);
 				sL.getContentPane().setBackground(Color.white);
 				dispose(); 
 				
@@ -178,7 +182,7 @@ public class section_addClub extends JFrame{
 }
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		section_addClub sl = new  section_addClub(1234567890);
+		section_addClub sl = new  section_addClub(1234567890,"test");
 		sl.getContentPane().setBackground(Color.white);
 	}
 
